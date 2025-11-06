@@ -45,7 +45,18 @@ header {
     margin: 0 25%;
 }
 
-.button-login:hover { /* muda cor quando passar o mouse*/
+.button-default {
+    background-color: #4e0070;
+        border-radius: 10px;
+    color: #ffffff;
+}
+
+/* .button-default:hover {
+    background: #4c79d3;
+    color: #ffffff;
+} */
+
+.button-login:hover, .button-default:hover { /* muda cor quando passar o mouse*/
     background-color: #4c79d3;
     color: #ffffff;
 }
@@ -59,6 +70,8 @@ header {
     color: #4c79d3;
 }
 
-.form-text {
-    
+.info {
+    background-color: #ffffff;
+    border-radius: 20px 20px 0px 0px;
+    padding: 20px 0px 0px 0px;
 }
