@@ -1,91 +1,68 @@
-const nome = "Jeferson";
-let nome2 = "";
-let pessoaDefault = {
-  //objeto.
-  nome: "Jeferson Rodrigues",
-  idade: "33",
-  profissao: "Desenvolvedor",
-};
+const myModal = new bootstrap.Modal("#register-modal"); // Inicializa o modal de registro usando Bootstrap
 
-let nomes = ["Jeferson Rodrigues", "João da Silva", "Maria da Silva"];
+//LOGAR NO SISTEMA
+document.getElementById("login-form").addEventListener("submit", function(e) {
+    e.preventDefault(); // Impede o envio padrão do formulário e manter a página atual
 
-let pessoasListaVazia = [];
+    const email = document.getElementById("email-input").value; // Pega o valor do campo de email
+    const password = document.getElementById("password-input").value; // Pega o valor do campo de senha
+    const session = document.getElementById("session-check").checked; // Pega o valor do campo de sessão
 
-let pessoas = [
-  {
-    nome: "Jeferson Rodrigues",
-    idade: "33",
-    profissao: "Desenvolvedor",
-  },
-  {
-    nome: "Maria da Silva",
-    idade: "25",
-    profissao: "UX/UI Designer",
-  },
-];
+    const account = getAccount(email); // Obtém os dados da conta usando o email fornecido
 
-function alterarNome() {
-  nome2 = "Dev.geekjs";
-  console.log("Valor alterado: ");
-  console.log(nome2);
-}
+    if(!account) { // Verifica se a conta existe
+        alert("Opss! Verifique o usuário ou a senha.");
+        return;
+    }
 
-function recebeEalteraNome(novoNome) {
-  nome2 = novoNome;
-  console.log("Valor alterado recebendo um nome:");
-  console.log(nome2);
-}
+    if(account) {
+        if(account.password !== password) { // Verifica se a senha está correta
+            alert("Opss! Verifique o usuário ou a senha.");
+            return;
+        }
 
-function imprimirPessoa(pessoa) {
-  console.log("Nome:");
-  console.log(pessoa.nome);
-
-  console.log("Idade:");
-  console.log(pessoa.idade);
-
-  console.log("Profissão:");
-  console.log(pessoa.profissao);
-}
-
-function adicionarPessoa(pessoa) {
-  pessoas.push(pessoa);
-}
-
-function imprimirPessoas() {
-  console.log("----------IMPRIMIR PESSOAS---------");
-  pessoas.forEach((item) => {
-    console.log("Nome:");
-    console.log(item.nome);
-
-    console.log("Idade:");
-    console.log(item.idade);
-
-    console.log("Profissão:");
-    console.log(item.profissao);
-  });
-}
-
-imprimirPessoas();
-
-adicionarPessoa({
-  nome: "João da Silva",
-  idade: "14",
-  profissao: "Jovem aprendiz",
+        window.location.href = "home.html"; // Redireciona para a página home.html
+    }
 });
 
-imprimirPessoas();
+//CRIAR CONTA
+document.getElementById("create-form").addEventListener("submit", function(e) {
+    e.preventDefault(); // Impede o envio padrão do formulário e manter a página atual
+    
+    const email = document.getElementById("email-create-input").value; // Pega o valor do campo de email
+    const password = document.getElementById("password-create-input").value; // Pega o valor do campo de senha
+    // Envia uma requisição POST para o servidor com os dados do formulário
+    
+    if(email.length < 5) { // Verifica se o email tem pelo menos 5 caracteres
+        alert("Por favor, insira um email válido.");
+        return;
+    }
 
+    if(password.length < 4) { // Verifica se a senha tem pelo menos 4 caracteres
+        alert("A senha deve ter pelo menos 4 caracteres.");
+        return;
+    }
 
+    saveAccount({     // Chama a função para salvar os dados da conta
+        login: email,
+        password: password,
+        transactions: [] // Inicializa a lista de transações vazia
+    });
 
-// imprimirPessoa(pessoaDefault);
+    myModal.hide(); // Fecha o modal de registro
 
-// imprimirPessoa({
-//   nome: "Miguel",
-//   idade: "25",
-//   profissao: "Analista de Dados",
-// });
+    alert("Conta criada com sucesso!");
+});
 
-// recebeEalteraNome("João da Silva");
-// recebeEalteraNome("Maria da Silva");
+function saveAccount(data) { // Função para salvar os dados da conta
+    localStorage.setItem(data.login, JSON.stringify(data)); // Salva os dados no localStorage do navegador
+}
 
-// alterarNome();
+function getAccount(key) { // Função para obter os dados da conta
+    const account = localStorage.getItem(key); // Obtém os dados do localStorage
+
+    if(account) {
+        return JSON.parse(account) // Retorna os dados como um objeto JavaScript
+    }
+    return ""; // Retorna uma string vazia se a conta não existir
+}
