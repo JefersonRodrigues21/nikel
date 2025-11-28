@@ -1,4 +1,8 @@
 const myModal = new bootstrap.Modal("#register-modal"); // Inicializa o modal de registro usando Bootstrap
+let logged = sessionStorage.getItem("logged"); // Obtém o valor da sessão do usuário do sessionStorage
+const session = localStorage.getItem("session"); // Obtém o valor da sessão do usuário do localStorage
+
+checkLogged(); // Verifica se o usuário está logado
 
 //LOGAR NO SISTEMA
 document.getElementById("login-form").addEventListener("submit", function(e) {
@@ -6,11 +10,11 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
 
     const email = document.getElementById("email-input").value; // Pega o valor do campo de email
     const password = document.getElementById("password-input").value; // Pega o valor do campo de senha
-    const session = document.getElementById("session-check").checked; // Pega o valor do campo de sessão
+    const checkSession = document.getElementById("session-check").checked; // Pega o valor do campo de sessão
 
     const account = getAccount(email); // Obtém os dados da conta usando o email fornecido
 
-    if(!account) { // Verifica se a conta existe
+    if(!account) {     // Verifica se a conta existe
         alert("Opss! Verifique o usuário ou a senha.");
         return;
     }
@@ -20,6 +24,8 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
             alert("Opss! Verifique o usuário ou a senha.");
             return;
         }
+
+        saveSession(email, checkSession); // Salva a sessão do usuário
 
         window.location.href = "home.html"; // Redireciona para a página home.html
     }
@@ -54,8 +60,30 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
     alert("Conta criada com sucesso!");
 });
 
+function checkLogged() { // Função para verificar se o usuário está logado
+    if(session) {
+        sessionStorage.setItem("logged", session); // Salva a sessão no sessionStorage do navegador
+        logged = session; // Atualiza a variável logged com o valor da sessão
+    }
+
+    if(logged) {
+        saveSession(logged, session);
+
+        window.location.href = "home.html"; // Redireciona para a página home.html
+    }
+}
+
 function saveAccount(data) { // Função para salvar os dados da conta
     localStorage.setItem(data.login, JSON.stringify(data)); // Salva os dados no localStorage do navegador
+}
+
+function saveSession (data, saveSession) { // Função para salvar a sessão do usuário
+    if(saveSession) {
+        localStorage.setItem("session", data); // Salva a sessão no localStorage do navegador
+        return;
+    }
+
+    sessionStorage.setItem("logged", data); // Salva a sessão no sessionStorage do navegador
 }
 
 function getAccount(key) { // Função para obter os dados da conta
