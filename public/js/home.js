@@ -8,6 +8,9 @@ let data = {
 };
 
 document.getElementById("button-logout").addEventListener("click", logout); // Adiciona um evento de clique ao botão de logout)
+document.getElementById("transactions-button").addEventListener("click", function() { // Adiciona um evento de clique ao botão de ver todas as transações
+    window.location.href = "transactions.html"; // Redireciona para a página de transações
+})
 
 //ADICIONAR LANÇAMENTO
 document.getElementById("transaction-form").addEventListener("submit", function(e) {
@@ -28,6 +31,7 @@ document.getElementById("transaction-form").addEventListener("submit", function(
 
     getCashIn(); // Atualiza a lista de entradas exibidas na página
     getCashOut(); // Atualiza a lista de saídas exibidas na página
+    getTotal(); // Atualiza o saldo total exibido na página
     
     alert("Lançamento adicionado com sucesso!");
 });
@@ -52,6 +56,7 @@ function checkLogged() { // Função para verificar se o usuário está logado
 
     getCashIn(); // Chama a função para calcular o total de entradas
     getCashOut(); // Chama a função para calcular o total de saídas
+    getTotal(); // Chama a função para calcular o saldo total
 }
 
 function logout() {
@@ -97,7 +102,7 @@ function getCashIn() { // Função para calcular o total de entradas
             `; // Adiciona o HTML da entrada atual à string cashInHtml
         }
 
-        document.getElementById("cash-in-list").innerHTML = cashInHtml = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas
+        document.getElementById("cash-in-list").innerHTML = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas
     }
 }
 
@@ -137,8 +142,25 @@ function getCashOut() { // Função para calcular o total de entradas
             `; // Adiciona o HTML da entrada atual à string cashInHtml
         }
 
-        document.getElementById("cash-out-list").innerHTML = cashInHtml = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas
+        document.getElementById("cash-out-list").innerHTML = cashInHtml;
+
+        // document.getElementById("cash-out-list").innerHTML = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas                                                                          
     }
+}
+
+function getTotal(){ // Função para calcular o saldo total
+    const transactions = data.transactions; // Obtém a lista de transações do usuário
+    let total = 0; // Inicializa o total como 0
+
+    transactions.forEach((item) => { // Itera sobre cada transação
+        if(item.type === "1") { // Se for uma entrada (type "1")
+            total += item.value; // Adiciona o valor ao total
+        } else {
+            total -= item.value; // Se for uma saída (type "2"), subtrai o valor do total
+        }
+    });
+
+    document.getElementById("total").innerHTML = `R$ ${total.toFixed(2)}`; // Atualiza o conteúdo HTML do elemento com id "total" com o saldo total formatado
 }
 
 function saveData(data) { // Função para salvar os dados do usuário
