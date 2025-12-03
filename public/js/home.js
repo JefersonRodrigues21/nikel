@@ -1,6 +1,8 @@
 const myModal = new bootstrap.Modal("#transaction-modal"); // Inicializa o modal de transação usando Bootstrap
 let logged = sessionStorage.getItem("logged"); // Obtém o valor da sessão do usuário do sessionStorage
 const session = localStorage.getItem("session"); // Obtém o valor da sessão do usuário do localStorage
+// let cashIn = []; // Array para armazenar as entradas
+// let cashOut = []; // Array para armazenar as saídas
 let data = {
     transactions: []
 };
@@ -23,6 +25,9 @@ document.getElementById("transaction-form").addEventListener("submit", function(
     saveData(data); // Salva os dados atualizados do usuário
     e.target.reset(); // Reseta o formulário de transação
     myModal.hide(); // Fecha o modal de transação
+
+    getCashIn(); // Atualiza a lista de entradas exibidas na página
+    getCashOut(); // Atualiza a lista de saídas exibidas na página
     
     alert("Lançamento adicionado com sucesso!");
 });
@@ -45,7 +50,8 @@ function checkLogged() { // Função para verificar se o usuário está logado
         data = JSON.parse(dataUser); // Converte os dados do usuário de JSON para um objeto JavaScript
     }
 
-    console.log(data); // Exibe os dados no console do navegador
+    getCashIn(); // Chama a função para calcular o total de entradas
+    getCashOut(); // Chama a função para calcular o total de saídas
 }
 
 function logout() {
@@ -53,6 +59,86 @@ function logout() {
     localStorage.removeItem("session"); // Remove a sessão do usuário do localStorage
 
     window.location.href = "index.html"; // Redireciona para a página index.html
+}
+
+function getCashIn() { // Função para calcular o total de entradas
+    const transactions = data.transactions;// Obtém a lista de transações do usuário
+
+    const cashIn = transactions.filter((item) => item.type === "1"); // Filtra as transações para obter apenas as entradas (type "1")
+
+    
+    if(cashIn.length) {
+        let cashInHtml = ``; // Inicializa uma string vazia para armazenar o HTML das entradas
+        let limit = 0; // Inicializa um contador para limitar o número de entradas exibidas
+
+        if(cashIn.length > 5) {
+            limit = 5; // Define o limite para 5 se houver mais de 5 entradas
+        } else {
+            limit = cashIn.length; // Define o limite para o número total de entradas disponíveis
+        }
+
+        for (let index = 0; index < limit; index++) { // Loop para iterar sobre as entradas até o limite definido
+            cashInHtml += `
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3 class="fs-2">R$ ${cashIn[index].value.toFixed(2)}</h3>
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col-12 col-md-8">
+                              <p>${cashIn[index].description}</p>
+                            </div>
+                            <div class="col-12 col-md-3 d-flex justify-content-end">
+                              ${cashIn[index].date}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `; // Adiciona o HTML da entrada atual à string cashInHtml
+        }
+
+        document.getElementById("cash-in-list").innerHTML = cashInHtml = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas
+    }
+}
+
+function getCashOut() { // Função para calcular o total de entradas
+    const transactions = data.transactions;// Obtém a lista de transações do usuário
+
+    const cashIn = transactions.filter((item) => item.type === "2"); // Filtra as transações para obter apenas as entradas (type "1")
+
+    
+    if(cashIn.length) {
+        let cashInHtml = ``; // Inicializa uma string vazia para armazenar o HTML das entradas
+        let limit = 0; // Inicializa um contador para limitar o número de entradas exibidas
+
+        if(cashIn.length > 5) {
+            limit = 5; // Define o limite para 5 se houver mais de 5 entradas
+        } else {
+            limit = cashIn.length; // Define o limite para o número total de entradas disponíveis
+        }
+
+        for (let index = 0; index < limit; index++) { // Loop para iterar sobre as entradas até o limite definido
+            cashInHtml += `
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h3 class="fs-2">R$ ${cashIn[index].value.toFixed(2)}</h3>
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col-12 col-md-8">
+                              <p>${cashIn[index].description}</p>
+                            </div>
+                            <div class="col-12 col-md-3 d-flex justify-content-end">
+                              ${cashIn[index].date}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `; // Adiciona o HTML da entrada atual à string cashInHtml
+        }
+
+        document.getElementById("cash-out-list").innerHTML = cashInHtml = cashInHtml; // Atualiza o conteúdo HTML do elemento com id "cash-in-list" com as entradas geradas
+    }
 }
 
 function saveData(data) { // Função para salvar os dados do usuário
