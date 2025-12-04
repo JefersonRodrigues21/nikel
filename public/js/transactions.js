@@ -4,15 +4,98 @@ const session = localStorage.getItem("session"); // Obtém o valor da sessão do
 // let cashIn = []; // Array para armazenar as entradas
 // let cashOut = []; // Array para armazenar as saídas
 let data = {
-    transactions: []
+  transactions: [], // Array para armazenar as transações do usuário
 };
 
 document.getElementById("button-logout").addEventListener("click", logout); // Adiciona um evento de clique ao botão de logout)
 checkLogged();
 
-function logout() {
-    sessionStorage.removeItem("logged"); // Remove a sessão do usuário do sessionStorage
-    localStorage.removeItem("session"); // Remove a sessão do usuário do localStorage
+//ADICIONAR LANÇAMENTO
+document
+  .getElementById("transaction-form")
+  .addEventListener("submit", function (e) {
+    e.preventDefault(); // Impede o envio padrão do formulário e manter a página atual
 
+    const value = parseFloat(document.getElementById("value-input").value); // Pega o valor do campo de valor e converte para número
+    const description = document.getElementById("description-input").value; // Pega o valor do campo de descrição
+    const date = document.getElementById("date-input").value; // Pega o valor do campo de data
+    const type = document.querySelector(
+      'input[name="type-input"]:checked'
+    ).value; // Pega o valor do campo de tipo (entrada ou saída)
+
+    data.transactions.unshift({
+      value: value,
+      type: type,
+      description: description,
+      date: date, // Adiciona a nova transação no início da lista de transações
+    });
+
+    saveData(data); // Salva os dados atualizados do usuário
+    e.target.reset(); // Reseta o formulário de transação
+    myModal.hide(); // Fecha o modal de transação
+
+    getTransactions(); // Atualiza a lista de transações exibida na página
+
+    alert("Lançamento adicionado com sucesso!");
+  });
+
+checkLogged();
+
+function checkLogged() {
+  // Função para verificar se o usuário está logado
+  if (session) {
+    sessionStorage.setItem("logged", session); // Salva a sessão no sessionStorage do navegador
+    logged = session; // Atualiza a variável logged com o valor da sessão
+  }
+
+  if (!logged) {
+    // Se o usuário não estiver logado
     window.location.href = "index.html"; // Redireciona para a página index.html
+    return;
+  }
+
+  const dataUser = localStorage.getItem(logged); // Obtém os dados do usuário do localStorage
+  if (dataUser) {
+    data = JSON.parse(dataUser); // Converte os dados do usuário de JSON para um objeto JavaScript
+  }
+
+  getTransactions(); // Chama a função para obter as transações do usuário
+}
+
+function logout() {
+  sessionStorage.removeItem("logged"); // Remove a sessão do usuário do sessionStorage
+  localStorage.removeItem("session"); // Remove a sessão do usuário do localStorage
+
+  window.location.href = "index.html"; // Redireciona para a página index.html
+}
+
+function getTransactions() {
+  const transactions = data.transactions; // Obtém as transações do objeto data
+  let transactionsHtml = ``; // Inicializa uma string vazia para armazenar o HTML das transações
+
+  if (transactions.length) {
+    transactions.forEach((item) => {
+      let type = "Entrada";
+
+      if (item.type === "2") {
+        type = "Saída";
+      }
+
+      transactionsHtml += `
+            <tr>
+                <th scope="row">${item.date}</th>
+                <td>${item.value.toFixed(2)}</td>
+                <td>${type}</td>                  
+                <td>${item.description}</td>
+            </tr>
+        `;
+    });
+  }
+
+  document.getElementById("transactions-list").innerHTML = transactionsHtml; // Atualiza o conteúdo do elemento com o ID "transactions-list" com o HTML gerado
+}
+
+function saveData(data) {
+  // Função para salvar os dados do usuário
+  localStorage.setItem(data.login, JSON.stringify(data)); // Salva os dados no localStorage do navegador
 }

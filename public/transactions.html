@@ -34,7 +34,7 @@
                 <i class="bi bi-person-circle fs-4"></i>
               </button>
               <ul class="dropdown-menu logout">
-                <li><a class="dropdown-item" href="#">Sair</a></li>
+                <li><button clss="dropdown-item" id="button-logout">Sair</button></li>
               </ul>
             </div>
           </div>
@@ -73,13 +73,8 @@
                       <th scope="col">Descrição</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">08/11/2021</th>
-                      <td>50.00</td>
-                      <td>Saída</td>
-                      <td>Gasolina</td>
-                    </tr>
+                  <tbody id="transactions-list">
+                    
                   </tbody>
                 </table>
 
@@ -106,22 +101,22 @@
           <form id="transaction-form">
             <div class="modal-body">
 
-              <div class="m-4">
+              <div class="m-3">
                 <label for="value-input" class="form-label">Valor</label>
-                <input type="number" class="form-control" id="value-input" aria-describedby="emailHelp" />
+                <input type="number" step="any" class="form-control" id="value-input" aria-describedby="emailHelp" />
               </div>
 
-              <div class="m-4">
+              <div class="m-3">
                 <label for="description-input" class="form-label">Descrição</label>
                 <input type="text" class="form-control" id="description-input" />
               </div>
 
-              <div class="m-4">
+              <div class="m-3">
                 <label for="date-input" class="form-label">Data</label>
                 <input type="date" class="form-control" id="date-input" />
               </div>
 
-              <div class="m-4">
+              <div class="m-3">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="type-input" id="inlineRadio1" value="1" checked>
                   <label class="form-check-label" for="inlineRadio1">Entrada</label>
