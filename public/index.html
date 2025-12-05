@@ -14,6 +14,7 @@
   <main>
     <div class="container">
       <div class="row vh-100">
+        <!-- Bloco da esquerda - Apresentação da aplicação -->
         <div class="col d-flex justify-content-center my-5 flex-column">
           <!-- my = margin y -->
           <div class="text-login">
@@ -26,8 +27,11 @@
             <img src="../assets/images/coins.png" alt="image coins" class="img-fluid d-none d-md-inline coins" />
           </div>
         </div>
+        <!-- Bloco da direita - Formulário de login -->
         <div class="col d-flex justify-content-center my-5 flex-column">
           <div class="container">
+
+            <!-- Logo do Nikel -->
             <div class="row">
               <div class="col">
                 <div class="text-center mb-3">
@@ -35,10 +39,13 @@
                 </div>
               </div>
             </div>
-            
+
+            <!-- Formulário de Login -->
             <div class="row">
               <div class="col">
                 <form id="login-form">
+
+                  <!-- Campo de E-mail -->
                   <div class="m-4">
                     <label for="email-input" class="form-label">E-mail</label>
                     <input type="email" class="form-control" id="email-input" aria-describedby="emailHelp" />
@@ -46,43 +53,56 @@
                       Ultilize seu email para realizar o login.
                     </div>
                   </div>
+
+                  <!-- Campo de Senha -->
                   <div class="m-4">
                     <label for="password-input" class="form-label">Senha</label>
                     <input type="password" class="form-control" id="password-input" />
                   </div>
+
+                  <!-- Checkbox para permanecer logado -->
                   <div class="m-4 form-check">
                     <input type="checkbox" class="form-check-input" id="session-check" />
                     <label class="form-check-label" for="session-check">Permanecer conectado</label>
                   </div>
+
+                  <!-- Botão de Ação -->
                   <button type="submit" class="btn button-login">Entre</button>
                 </form>
               </div>
             </div>
 
+
+            <!-- Link para criar conta -->
             <div class="row">
               <div class="col">
                 <p id="link-conta" class="text-center mt-2 form-text" data-bs-toggle="modal"
                   data-bs-target="#register-modal">
+
                   <!--Modal -->
                   Ainda não tem conta?
                   <span class="link-default">Crie uma conta.</span>
                 </p>
               </div>
             </div>
+
+            <!-- Logo Codai -->
             <div class="row">
               <div class="col">
                 <div class="text-center mt-5">
                   <p>
-                    <img src="../assets/images/codai-logo.png" alt="" />
+                    <img src="../assets/images/codai-logo.png" alt="logo-codai" />
                   </p>
                 </div>
               </div>
             </div>
+
+            <!-- Logo Growdev -->
             <div class="row">
               <div class="col">
                 <div class="text-center">
                   <p>
-                    <img src="../assets/images/growdev-logo.png" alt="" />
+                    <img src="../assets/images/growdev-logo.png" alt="logo-growdev" />
                   </p>
                 </div>
               </div>
@@ -94,7 +114,10 @@
     <!-- Modal -->
     <div class="modal fade" id="register-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
+
         <div class="modal-content">
+
+          <!-- Cabeçalho do modal -->
           <div class="modal-header">
             <h1 class="modal-title" id="exampleModalLabel"><!---->
               Crie sua conta
@@ -102,9 +125,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
+          <!-- Formulário de cadastro -->
           <form id="create-form">
+
+            <!-- Campos do formulário -->
             <div class="modal-body">
 
+              <!-- Campo de email -->
               <div class="m-4">
                 <label for="email-create-input" class="form-label">E-mail</label>
                 <input type="email" class="form-control" id="email-create-input" aria-describedby="emailHelp"
@@ -114,6 +141,7 @@
                 </div>
               </div>
 
+              <!-- Campo de Senha -->
               <div class="m-4">
                 <label for="password-create-input" class="form-label">Senha</label>
                 <input type="password" class="form-control" id="password-create-input" required />
@@ -124,6 +152,7 @@
 
             </div>
 
+            <!-- Botões de ações do formulário -->
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary button-cancel" data-bs-dismiss="modal">
                 Cancelar
