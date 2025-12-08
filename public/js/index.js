@@ -33,12 +33,15 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
 
 //CRIAR CONTA
 document.getElementById("create-form").addEventListener("submit", function(e) {
-    e.preventDefault(); // Impede o envio padrão do formulário e manter a página atual
+    // 1- Impede o envio padrão do formulário e manter a página atual
+    e.preventDefault(); //
     
+    // 2- Pega os valores dos campos de email e senha
     const email = document.getElementById("email-create-input").value; // Pega o valor do campo de email
     const password = document.getElementById("password-create-input").value; // Pega o valor do campo de senha
     // Envia uma requisição POST para o servidor com os dados do formulário
     
+    // 3 - Valida os dados do formulário
     if(email.length < 5) { // Verifica se o email tem pelo menos 5 caracteres
         alert("Por favor, insira um email válido.");
         return;
@@ -48,15 +51,29 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
         alert("A senha deve ter pelo menos 4 caracteres.");
         return;
     }
+    
+    // 4 - Verifica se a conta já existe
+    const usuarioExistente = localStorage.getItem(email);
 
+    if(usuarioExistente) { // Se a conta já existir, exibe um alerta e retorna
+        alert("E-mail já cadastrado. Por favor, utilize outro.");
+        return;
+    }
+
+    // 5 - Armazena os dados da conta no localStorage
     saveAccount({     // Chama a função para salvar os dados da conta
         login: email,
         password: password,
         transactions: [] // Inicializa a lista de transações vazia
     });
 
+    // 6 - Limpa os campos do formulário
+    e.target.reset(); 
+    
+    // 7 - Fecha o modal e exibe uma mensagem de sucesso
     myModal.hide(); // Fecha o modal de registro
-
+    
+    // 8 - Exibe uma mensagem de sucesso
     alert("Conta criada com sucesso!");
 });
 
